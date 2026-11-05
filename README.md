@@ -1,2 +1,1 @@
-# ci-oidc-check
-ci
+hi
